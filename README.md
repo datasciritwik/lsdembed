@@ -1,9 +1,9 @@
-# LSdembed - Physics-Inspired Text Embedding Library
+# lsdembed - Physics-Inspired Text Embedding Library
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-LSdembed is a novel text embedding library that uses physics-inspired algorithms to create high-quality semantic embeddings. By modeling text tokens as particles in a physical system with forces of attraction and repulsion, LSdembed captures nuanced semantic relationships that traditional methods might miss.
+Lagrangian Semantic Dynamics Embeddings[LSDEmbed] is a novel text embedding library that uses physics-inspired algorithms to create high-quality semantic embeddings. By modeling text tokens as particles in a physical system with forces of attraction and repulsion, lsdembed captures nuanced semantic relationships that traditional methods might miss.
 
 <h3 align="center">
   <code>pip install lsdembed</code>
@@ -29,7 +29,7 @@ LSdembed is a novel text embedding library that uses physics-inspired algorithms
 ### Install from Source
 
 ```bash
-git clone https://github.com/your-username/lsdembed.git
+git clone https://github.com/datasciritwik/lsdembed.git
 cd lsdembed
 pip install -e .
 ```
@@ -45,10 +45,10 @@ The library requires:
 ## Quick Start
 
 ```python
-from lsdembed import LSdembed
+from lsdembed import lsdembed
 
 # Initialize with default parameters
-model = LSdembed()
+model = lsdembed()
 
 # Fit on your text corpus
 texts = [
@@ -85,7 +85,7 @@ params = {
     'seed': 42          # Random seed for reproducibility
 }
 
-model = LSdembed(params)
+model = lsdembed(params)
 ```
 
 ### Model Persistence
@@ -95,10 +95,10 @@ model = LSdembed(params)
 model.save_model('my_model.pkl', compress=True)
 
 # Load model later
-loaded_model = LSdembed.from_pretrained('my_model.pkl.gz')
+loaded_model = lsdembed.from_pretrained('my_model.pkl.gz')
 
 # Or load into existing instance
-model = LSdembed()
+model = lsdembed()
 model.load_model('my_model.pkl.gz')
 ```
 
@@ -153,10 +153,10 @@ params = {'d': 256, 'alpha': 1.5, 'beta': 0.5, 'r_cutoff': 3.0, 'dt': 0.05}
 
 ## API Reference
 
-### LSdembed Class
+### lsdembed Class
 
 #### `__init__(params=None)`
-Initialize the LSdembed model with optional parameters.
+Initialize the lsdembed model with optional parameters.
 
 #### `fit(texts, chunk_size=1000)`
 Fit the model on a corpus of texts.
@@ -220,14 +220,14 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Citation
 
-If you use LSdembed in your research, please cite:
+If you use lsdembed in your research, please cite:
 
 ```bibtex
 @software{lsdembed,
-  title={LSdembed: Physics-Inspired Text Embedding Library},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/your-username/lsdembed}
+  title={lsdembed: Physics-Inspired Text Embedding Library},
+  author={Ritwik singh},
+  year={2025},
+  url={https://github.com/datasciritwik/lsdembed}
 }
 ```
 

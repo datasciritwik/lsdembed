@@ -1,4 +1,4 @@
-# LSdembed: Physics-Inspired Text Embedding - Core Logic and Mathematical Foundations
+# LSDEmbed: Physics-Inspired Text Embedding - Core Logic and Mathematical Foundations
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -11,7 +11,7 @@
 
 ## Overview
 
-LSdembed is a revolutionary text embedding library that models text tokens as particles in a physical system. Unlike traditional embedding methods that rely purely on statistical or neural approaches, LSdembed uses classical mechanics principles to simulate semantic relationships through particle interactions.
+LSDEmbed is a revolutionary text embedding library that models text tokens as particles in a physical system. Unlike traditional embedding methods that rely purely on statistical or neural approaches, lsdembed uses classical mechanics principles to simulate semantic relationships through particle interactions.
 
 The core insight is that **semantic similarity can be modeled as physical forces**: similar tokens attract each other, while dissimilar tokens repel. By simulating this particle system until equilibrium, we obtain embeddings that capture nuanced semantic relationships.
 
@@ -31,10 +31,6 @@ The system implements two fundamental forces:
 
 #### Universal Repulsion Force
 All particles repel each other with a force inversely proportional to the square of their distance:
-
-Here's the corrected and properly formatted **Markdown with LaTeX**:
-
-### ✅ Markdown (with LaTeX math syntax)
 
 $$
 F_{\text{repulsion}}(i, j) = \alpha \cdot \frac{q_i - q_j}{\|q_i - q_j\|^3}
@@ -303,7 +299,7 @@ This ensures:
 
 ## Conclusion
 
-LSdembed represents a novel approach to text embedding that bridges the gap between linguistic intuition and physical modeling. By treating semantic relationships as physical forces, the system naturally discovers embedding structures that capture both local context and global semantic patterns.
+lsdembed represents a novel approach to text embedding that bridges the gap between linguistic intuition and physical modeling. By treating semantic relationships as physical forces, the system naturally discovers embedding structures that capture both local context and global semantic patterns.
 
 The physics-inspired approach offers several advantages:
 
@@ -312,4 +308,4 @@ The physics-inspired approach offers several advantages:
 3. **Robustness**: Physical constraints prevent pathological embeddings
 4. **Scalability**: Optimized algorithms handle large corpora efficiently
 
-The mathematical foundation ensures that the embeddings are not only semantically meaningful but also computationally tractable, making LSdembed a powerful tool for modern NLP applications.
+The mathematical foundation ensures that the embeddings are not only semantically meaningful but also computationally tractable, making lsdembed a powerful tool for modern NLP applications.
