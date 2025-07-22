@@ -1,6 +1,5 @@
-from setuptools import setup, Extension
+from setuptools import setup, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
-from pybind11 import get_cmake_dir
 import pybind11
 
 ext_modules = [
@@ -8,11 +7,11 @@ ext_modules = [
         "lsdembed._lsd_core",
         ["src/lsd_engine.cpp", "src/python_bindings.cpp"],
         include_dirs=[
-            # Path to pybind11 headers
-            pybind11.get_cmake_dir() + "/../../../include",
+            pybind11.get_include(),
+            "src",  # Add src directory to include paths
         ],
         cxx_std=17,
-        define_macros=[("VERSION_INFO", '"dev"')],
+        define_macros=[("VERSION_INFO", '"0.1.0"')],
     ),
 ]
 
