@@ -5,6 +5,10 @@
 
 LSdembed is a novel text embedding library that uses physics-inspired algorithms to create high-quality semantic embeddings. By modeling text tokens as particles in a physical system with forces of attraction and repulsion, LSdembed captures nuanced semantic relationships that traditional methods might miss.
 
+<h3 align="center">
+  <code>pip install lsdembed</code>
+</h3>
+
 ## Features
 
 - **Physics-Inspired Embeddings**: Uses particle physics simulation to model semantic relationships
