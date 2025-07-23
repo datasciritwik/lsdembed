@@ -48,7 +48,7 @@ The library requires:
 from lsdembed import LSdembed
 
 # Initialize with default parameters
-model = lsdembed()
+model = LSdembed()
 
 # Fit on your text corpus
 texts = [
