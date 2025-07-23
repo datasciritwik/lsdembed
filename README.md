@@ -45,7 +45,7 @@ The library requires:
 ## Quick Start
 
 ```python
-from lsdembed import lsdembed
+from lsdembed import LSdembed
 
 # Initialize with default parameters
 model = lsdembed()
