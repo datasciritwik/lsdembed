@@ -196,8 +196,8 @@ class TestTextProcessorEdgeCases:
         tokens = processor.tokenize("")
         assert tokens == []
         
-        # Empty list chunking
-        chunks = processor.chunk_texts([], max_chars=100)
+        # Empty string chunking
+        chunks = processor.chunk_text("")
         assert chunks == []
     
     def test_special_characters(self):
@@ -209,8 +209,8 @@ class TestTextProcessorEdgeCases:
         
         # Mixed content
         tokens = processor.tokenize("Hello! How are you?")
-        assert "Hello" in tokens
-        assert "How" in tokens
+        assert "hello" in tokens  # tokenizer converts to lowercase
+        assert "how" in tokens
         assert "!" not in tokens
     
     def test_custom_token_pattern(self):

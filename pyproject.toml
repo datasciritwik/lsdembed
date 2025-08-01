@@ -11,7 +11,7 @@ include = ["lsdembed*"]
 
 [project]
 name = "lsdembed"
-version = "0.2.0"
+version = "0.3.0"
 description = "Physics-inspired text embedding library"
 authors = [{name = "Ritwik Singh", email = "officialritwik098@gmail.com"}]
 readme = "README.md"

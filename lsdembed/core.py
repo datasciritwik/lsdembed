@@ -18,21 +18,59 @@ class LSdembed:
         self.text_processor = TextProcessor()
         self.is_fitted = False
         
-    def fit(self, texts: List[str], chunk_size: int = 1000):
+    def fit(self, texts: Union[str, List[str]], chunk_size: int = 1000):
         """Fit the model on a corpus of texts"""
-        # Process texts and calculate IDF
-        chunks = self.text_processor.chunk_texts(texts, chunk_size)
-        self.idf_scores = self.text_processor.calculate_idf(chunks)
+        # Handle empty input
+        if not texts or (isinstance(texts, list) and all(not t.strip() for t in texts)):
+            # Create minimal valid state for empty input
+            self.chunks = []
+            self.idf_scores = {}
+            self.corpus_center = np.zeros(self.params.d)
+            self.final_embeddings = np.empty((0, self.params.d))
+            self.is_fitted = True
+            return
+        
+        # Update text processor chunk size if different from default
+        if chunk_size != 300:  # 300 is the default chunk_size in TextProcessor
+            self.text_processor = TextProcessor(
+                token_pattern=self.text_processor.token_pattern.pattern,
+                chunk_size=chunk_size
+            )
+        
+        # Process texts and collect all chunks
+        all_chunks = []
+        
+        if isinstance(texts, str):
+            # Single text input - chunk it
+            chunks = self.text_processor.chunk_text(texts)
+            all_chunks.extend(chunks)
+        else:
+            # List of texts - chunk each text individually
+            for text in texts:
+                if text.strip():  # Skip empty texts
+                    chunks = self.text_processor.chunk_text(text)
+                    all_chunks.extend(chunks)
+        
+        # Handle case where chunking results in empty chunks
+        if not all_chunks:
+            self.chunks = []
+            self.idf_scores = {}
+            self.corpus_center = np.zeros(self.params.d)
+            self.final_embeddings = np.empty((0, self.params.d))
+            self.is_fitted = True
+            return
+            
+        self.idf_scores = self.text_processor.calculate_idf(all_chunks)
         
         # Build embeddings
-        token_chunks = [self.text_processor.tokenize(chunk) for chunk in chunks]
+        token_chunks = [self.text_processor.tokenize(chunk) for chunk in all_chunks]
         raw_embeddings = self.engine.embed_chunks(token_chunks, self.idf_scores)
         
         # Normalize vector space
         self.corpus_center, self.final_embeddings = normalize_embeddings(
             np.array(raw_embeddings)
         )
-        self.chunks = chunks
+        self.chunks = all_chunks
         self.is_fitted = True
         
     def embed_query(self, query: str) -> np.ndarray:
@@ -50,11 +88,26 @@ class LSdembed:
     
     def search(self, query: str, top_k: int = 5) -> List[Tuple[str, float]]:
         """Search for similar chunks"""
+        if not self.is_fitted:
+            raise ValueError("Model must be fitted before searching")
+        
+        # Handle empty corpus
+        if len(self.chunks) == 0:
+            return []
+            
         query_emb = self.embed_query(query)
         similarities = self.final_embeddings @ query_emb
         
-        top_indices = np.argpartition(similarities, -top_k)[-top_k:]
-        sorted_indices = top_indices[np.argsort(similarities[top_indices])][::-1]
+        # Ensure top_k doesn't exceed the number of chunks
+        actual_k = min(top_k, len(self.chunks))
+        
+        if actual_k == len(self.chunks):
+            # If we want all chunks, just sort them all
+            sorted_indices = np.argsort(similarities)[::-1]
+        else:
+            # Use argpartition for efficiency when we want fewer than all chunks
+            top_indices = np.argpartition(similarities, -actual_k)[-actual_k:]
+            sorted_indices = top_indices[np.argsort(similarities[top_indices])][::-1]
         
         return [(self.chunks[i], float(similarities[i])) for i in sorted_indices]
     
@@ -102,15 +155,23 @@ class LSdembed:
         filepath = Path(filepath)
         
         # Handle compressed files
-        if filepath.suffix == '.gz' or (filepath.with_suffix('.gz')).exists():
-            if filepath.suffix != '.gz':
-                filepath = filepath.with_suffix(filepath.suffix + '.gz')
+        compressed_path = filepath.with_suffix(filepath.suffix + '.gz')
+        if filepath.suffix == '.gz':
+            # Already a .gz file
             import gzip
             with gzip.open(filepath, 'rb') as f:
                 model_data = pickle.load(f)
-        else:
+        elif compressed_path.exists():
+            # Compressed version exists
+            import gzip
+            with gzip.open(compressed_path, 'rb') as f:
+                model_data = pickle.load(f)
+        elif filepath.exists():
+            # Uncompressed version exists
             with open(filepath, 'rb') as f:
                 model_data = pickle.load(f)
+        else:
+            raise FileNotFoundError(f"Model file not found: {filepath} or {compressed_path}")
         
         # Restore parameters
         params_dict = model_data['params']

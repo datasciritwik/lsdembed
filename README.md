@@ -46,26 +46,18 @@ The library requires:
 
 ```python
 from lsdembed import LSdembed
+from lsdembed.text_processor import TextProcessor
 
-# Initialize with default parameters
-model = LSdembed()
+# Single text input (new preferred method)
+model = LSdembed({'d': 128})
+model.fit("Your entire document text here", chunk_size=300)
 
-# Fit on your text corpus
-texts = [
-    "The quick brown fox jumps over the lazy dog",
-    "Machine learning is a subset of artificial intelligence",
-    "Natural language processing helps computers understand text"
-]
+# Custom chunking parameters
+processor = TextProcessor(chunk_size=200, chunk_overlap=50)
+chunks = processor.chunk_text("Your text here")
 
-model.fit(texts, chunk_size=500)
-
-# Search for similar content
-results = model.search("artificial intelligence", top_k=3)
-
-for text, score in results:
-    print(f"Score: {score:.4f}")
-    print(f"Text: {text}")
-    print("---")
+# Backward compatible list input
+model.fit(["Text 1", "Text 2", "Text 3"])
 ```
 
 ## Advanced Usage
